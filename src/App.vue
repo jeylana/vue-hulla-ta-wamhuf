@@ -48,13 +48,30 @@
 
     <div class="filters">
       <h3>Filters</h3>
-      <div></div>
+      <div class="filter-buttons">
+        <button
+          :style="{ 'background-color': showAvailable ? 'red' : 'green' }"
+          v-on:click="filterAvailableEnabled()"
+        >
+          Show {{ showAvailable ? 'Unavailable Aswell' : 'Only Available' }}
+        </button>
+        <select style="margin-left: 10px" v-model="selectedBrand">
+          <option disabled value="">Select Brand</option>
+          <option v-for="brand in brands" :value="brand">{{ brand }}</option>
+        </select>
+
+        <select style="margin-left: 10px" v-model="selectedBrand">
+          <option disabled value="">Sort Order</option>
+          <option v-for="order in orders" :value="order">{{ order }}</option>
+        </select>
+        <span style="margin-left: 10px"
+          >Number of products showing: {{ productsCount }}</span
+        >
+      </div>
     </div>
 
-    <div class="product-grid">
-      <ProductGridItem v-
-      <ProductGridItem :product="products[0]" />
-      <ProductGridItem :product="products[1]" />
+    <div v-for="product in filteredProducts" class="product-grid">
+      <ProductGridItem :product="product" />
     </div>
   </div>
 </template>
@@ -71,7 +88,54 @@ export default {
   data() {
     return {
       products,
+      showAvailable: false,
+      brands: ['Nike', 'Adidas', 'New Balance', 'Converse'],
+      orders: ['Ascending', 'Descending'],
+      selectedBrand: '',
+      productsCount: 0,
     };
+  },
+  methods: {
+    filterAvailableEnabled() {
+      this.showAvailable = !this.showAvailable;
+    },
+  },
+  computed: {
+    filteredProducts() {
+      try {
+        if (this.showAvailable) {
+          if (this.selectedBrand !== '') {
+            const filteredList = this.products.filter(
+              (product) =>
+                product.brand === this.selectedBrand && product.isAvailable
+            );
+            this.productsCount = filteredList.length;
+            return filteredList;
+          } else {
+            const filteredList = this.products.filter(
+              (product) => product.isAvailable
+            );
+            this.productsCount = filteredList.length;
+            return filteredList;
+          }
+        } else {
+          if (this.selectedBrand !== '') {
+            const filteredList = this.products.filter(
+              (product) => product.brand === this.selectedBrand
+            );
+
+            this.productsCount = filteredList.length;
+            return filteredList;
+          } else {
+            const newList = this.products;
+            this.productsCount = newList.length;
+            return newList;
+          }
+        }
+      } catch (e) {
+        console.log('error', e.meesage);
+      }
+    },
   },
 };
 </script>
@@ -87,5 +151,18 @@ export default {
 
 .link {
   color: #3a7f71;
+}
+
+.product-grid {
+  display: flex;
+  flex-direction: row;
+}
+
+.filters {
+  margin-bottom: 20px;
+}
+
+.filter-buttons {
+  display: flex;
 }
 </style>

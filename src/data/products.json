@@ -61,7 +61,7 @@
     "image": "https://storage.googleapis.com/hulla-customer-files/tech-assessment/product_8.webp",
     "rank": null,
     "brand": "Adidas",
-    "isAvailable": true
+    "isAvailable": false
   },
   {
     "name": "Product 9",
