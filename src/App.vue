@@ -60,7 +60,7 @@
           <option v-for="brand in brands" :value="brand">{{ brand }}</option>
         </select>
 
-        <select style="margin-left: 10px" v-model="selectedBrand">
+        <select style="margin-left: 10px" v-model="selectedOrder">
           <option disabled value="">Sort Order</option>
           <option v-for="order in orders" :value="order">{{ order }}</option>
         </select>
@@ -92,6 +92,7 @@ export default {
       brands: ['Nike', 'Adidas', 'New Balance', 'Converse'],
       orders: ['Ascending', 'Descending'],
       selectedBrand: '',
+      selectedOrder: '',
       productsCount: 0,
     };
   },
